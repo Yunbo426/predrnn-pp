@@ -1,7 +1,7 @@
 __author__ = 'yunbo'
 
 import tensorflow as tf
-from layers.HighwayCell import HighwayCell
+from layers.GradientHighwayUnit import GHU as ghu
 from layers.CausalLSTMCell import CausalLSTMCell as cslstm
 
 def rnn(images, mask_true, num_layers, num_hidden, filter_size, stride=1,
@@ -29,7 +29,7 @@ def rnn(images, mask_true, num_layers, num_hidden, filter_size, stride=1,
         cell.append(None)
         hidden.append(None)
 
-    ghu = HighwayCell('highway', filter_size, num_hidden[0], tln=tln)
+    gradient_highway = ghu('highway', filter_size, num_hidden[0], tln=tln)
 
     mem = None
     z_t = None
@@ -43,7 +43,7 @@ def rnn(images, mask_true, num_layers, num_hidden, filter_size, stride=1,
                 inputs = mask_true[:,t-10]*images[:,t] + (1-mask_true[:,t-10])*x_gen
 
             hidden[0], cell[0], mem = lstm[0](inputs, hidden[0], cell[0], mem)
-            z_t = ghu(hidden[0], z_t)
+            z_t = gradient_highway(hidden[0], z_t)
             hidden[1], cell[1], mem = lstm[1](z_t, hidden[1], cell[1], mem)
 
             for i in xrange(2, num_layers):

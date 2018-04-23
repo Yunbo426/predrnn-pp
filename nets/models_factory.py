@@ -1,17 +1,15 @@
 import tensorflow as tf
 
-from nets import predrnn
 from nets import predrnn_pp
 
-networks_map = {'predrnn': predrnn.predrnn,
-                'predrnn_pp': predrnn_pp.rnn,
+networks_map = {'predrnn_pp': predrnn_pp.rnn,
                }
 
 def construct_model(name, images, mask_true, num_layers, num_hidden,
                     filter_size, stride, seq_length, input_length, tln):
     '''Returns a sequence of generated frames
     Args:
-        name: [predrnn / predrnn_pp]
+        name: [predrnn_pp]
         mask_true: for schedualed sampling.
         num_hidden: number of units in a lstm layer.
         filter_size: for convolutions inside lstm.

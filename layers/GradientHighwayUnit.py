@@ -3,7 +3,7 @@ __author__ = 'yunbo'
 import tensorflow as tf
 from layers.TensorLayerNorm import tensor_layer_norm
 
-class HighwayCell():
+class GHU():
     def __init__(self, layer_name, filter_size, num_features, tln=False,
                  initializer=0.001):
         """Initialize the Gradient Highway Unit.
