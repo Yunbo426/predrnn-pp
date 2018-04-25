@@ -14,7 +14,7 @@ For video format datasets, please extract frames from original video clips and m
 ## Training
 Use the train.py script to train the model. To train the default model on Moving MNIST simply use:
 ```
-python train_network.py
+python train.py
 ```
 You might want to change the `--train_data_paths`, `--valid_data_paths` and `--save_dir` which point to paths on your system to download the data to, and where to save the checkpoints.
 
@@ -22,8 +22,16 @@ To train on your own dataset, have a look at the `InputHandle` classes in the `d
 
 At inference, the generated future frames will be saved in the `--results` folder.
 
+## Prediction samples
+PredRNN++ | A baseline model | The ground truth. 
+
+<div align=center><img width="600" height="200" src="https://github.com/Yunbo426/ImageToGit/blob/master/23.gif"/></div>
+<div align=center><img width="600" height="200" src="https://github.com/Yunbo426/ImageToGit/blob/master/99.gif"/></div>
+
+All models predict 10 frames given the last 10 frames.
+
 ## Citation
-Please cite the following paper if you feel this repository useful.
+Please cite the following paper if you find this repository useful.
 ```
 @article{wang2018predrnn,
     title={PredRNN++: Towards A Resolution of the Deep-in-Time Dilemma in Spatiotemporal Predictive Learning},
