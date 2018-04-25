@@ -23,7 +23,7 @@ To train on your own dataset, have a look at the `InputHandle` classes in the `d
 At inference, the generated future frames will be saved in the `--results` folder.
 
 ## Prediction samples
-PredRNN++ | A baseline model | The ground truth. All models predict 10 frames given the last 10 frames.
+The ground truth | PredRNN++ | A baseline model. All models predict 10 frames given the last 10 frames.
 
 <div align=center><img width="300" height="100" src="https://github.com/Yunbo426/ImageToGit/blob/master/23.gif"/></div>
 <div align=center><img width="300" height="100" src="https://github.com/Yunbo426/ImageToGit/blob/master/99.gif"/></div>
