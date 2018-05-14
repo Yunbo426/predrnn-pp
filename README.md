@@ -1,7 +1,7 @@
 # PredRNN++
 This is a TensorFlow implementation of [PredRNN++](https://arxiv.org/abs/1804.06300), a recurrent model for video prediction as described in the following paper:
 
-**PredRNN++: Towards A Resolution of the Deep-in-Time Dilemma in Spatiotemporal Predictive Learning**. Yunbo Wang, Zhifeng Gao, Mingsheng Long, Jianmin Wang and Philip S. Yu. ICML 2018.
+**PredRNN++: Towards A Resolution of the Deep-in-Time Dilemma in Spatiotemporal Predictive Learning**, by Yunbo Wang, Zhifeng Gao, Mingsheng Long, Jianmin Wang and Philip S. Yu.
 
 ## Setup
 Required python libraries: tensorflow (>=1.0) + opencv + numpy.\
@@ -31,10 +31,10 @@ The ground truth | PredRNN++ | A baseline model.\
 ## Citation
 Please cite the following paper if you find this repository useful.
 ```
-@article{wang2018predrnn,
+@inproceedings{wang2018predrnn,
     title={PredRNN++: Towards A Resolution of the Deep-in-Time Dilemma in Spatiotemporal Predictive Learning},
     author={Wang, Yunbo and Gao, zhifeng and Long, Mingsheng and Wang, Jianmin and Yu, Philip S.},
-    journal={arXiv preprint arXiv:1804.06300},
+    journal={ICML},
     year={2018}
 }
 ```
