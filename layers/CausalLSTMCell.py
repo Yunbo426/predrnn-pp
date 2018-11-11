@@ -63,7 +63,7 @@ class CausalLSTMCell():
                 name='spatial_memory_transition')
             if self.layer_norm:
                 h_cc = tensor_layer_norm(h_cc, 'h2c')
-                c_cc = tensor_layer_norm(c_cc, 'c2m')
+                c_cc = tensor_layer_norm(c_cc, 'c2c')
                 m_cc = tensor_layer_norm(m_cc, 'm2m')
 
             i_h, g_h, f_h, o_h = tf.split(h_cc, 4, 3)
