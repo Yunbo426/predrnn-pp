@@ -155,7 +155,7 @@ def main(argv=None):
         FLAGS.dataset_name, FLAGS.train_data_paths, FLAGS.valid_data_paths,
         FLAGS.batch_size, FLAGS.img_width)
 
-    print 'Initializing models'
+    print(Initializing models)
     model = Model()
     lr = FLAGS.lr
 
