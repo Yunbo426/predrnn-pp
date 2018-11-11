@@ -50,23 +50,30 @@ class CausalLSTMCell():
                 h, self.num_hidden*4,
                 self.filter_size, 1, padding='same',
                 kernel_initializer=self.initializer,
-                name='time_state_to_state')
+                name='temporal_state_transition')
+            c_cc = tf.layers.conv2d(
+                c, self.num_hidden*3,
+                self.filter_size, 1, padding='same',
+                kernel_initializer=self.initializer,
+                name='temporal_memory_transition')
             m_cc = tf.layers.conv2d(
                 m, self.num_hidden*3,
                 self.filter_size, 1, padding='same',
                 kernel_initializer=self.initializer,
-                name='spatio_state_to_state')
+                name='spatial_memory_transition')
             if self.layer_norm:
                 h_cc = tensor_layer_norm(h_cc, 'h2c')
+                c_cc = tensor_layer_norm(c_cc, 'c2m')
                 m_cc = tensor_layer_norm(m_cc, 'm2m')
 
             i_h, g_h, f_h, o_h = tf.split(h_cc, 4, 3)
+            i_c, g_c, f_c = tf.split(c_cc, 3, 3)
             i_m, f_m, m_m = tf.split(m_cc, 3, 3)
 
             if x is None:
-                i = tf.sigmoid(i_h)
-                f = tf.sigmoid(f_h + self._forget_bias)
-                g = tf.tanh(g_h)
+                i = tf.sigmoid(i_h + i_c)
+                f = tf.sigmoid(f_h + f_c + self._forget_bias)
+                g = tf.tanh(g_h + g_c)
             else:
                 x_cc = tf.layers.conv2d(
                     x, self.num_hidden*7,
@@ -78,21 +85,21 @@ class CausalLSTMCell():
 
                 i_x, g_x, f_x, o_x, i_x_, g_x_, f_x_ = tf.split(x_cc, 7, 3)
 
-                i = tf.sigmoid(i_x + i_h)
-                f = tf.sigmoid(f_x + f_h + self._forget_bias)
-                g = tf.tanh(g_x + g_h)
+                i = tf.sigmoid(i_x + i_h + i_c)
+                f = tf.sigmoid(f_x + f_h + f_c + self._forget_bias)
+                g = tf.tanh(g_x + g_h + g_c)
 
             c_new = f * c + i * g
 
-            c_cc = tf.layers.conv2d(
+            c2m = tf.layers.conv2d(
                 c_new, self.num_hidden*4,
                 self.filter_size, 1, padding='same',
                 kernel_initializer=self.initializer,
                 name='c2m')
             if self.layer_norm:
-                c_cc = tensor_layer_norm(c_cc, 'c2m')
+                c2m = tensor_layer_norm(c2m, 'c2m')
 
-            i_c, g_c, f_c, o_c = tf.split(c_cc, 4, 3)
+            i_c, g_c, f_c, o_c = tf.split(c2m, 4, 3)
 
             if x is None:
                 ii = tf.sigmoid(i_c + i_m)
@@ -111,7 +118,7 @@ class CausalLSTMCell():
                 kernel_initializer=self.initializer,
                 name='m_to_o')
             if self.layer_norm:
-                o_m = tensor_layer_norm(o_m, 'm_to_o')
+                o_m = tensor_layer_norm(o_m, 'm2o')
 
             if x is None:
                 o = tf.tanh(o_h + o_c + o_m)
@@ -120,7 +127,7 @@ class CausalLSTMCell():
 
             cell = tf.concat([c_new, m_new],-1)
             cell = tf.layers.conv2d(cell, self.num_hidden, 1, 1,
-                                    padding='same', name='cell_reduce')
+                                    padding='same', name='memory_reduce')
 
             h_new = o * tf.tanh(cell)
 
